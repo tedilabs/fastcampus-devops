@@ -1,0 +1,159 @@
+context:
+  region: "apne2"
+  vpc: "apne2-fastcampus"
+  cidrs:
+    "primary": "10.222.0.0/16"
+    "pod": "10.223.0.0/17"
+
+remote_states:
+  "domain-zone":
+    organization: "fastcampus-devops"
+    workspace: "aws-domain-zone"
+
+prefix_lists:
+  ipv4: []
+
+vpc:
+  name: "${vpc}"
+  cidr: "${cidrs.primary}"
+  secondary_cidrs:
+  # EKS Pod CIDR
+  - "${cidrs.pod}"
+  vpn_gateway_asn: 4242000000
+  private_zones:
+  - "dev/dkr.ecr.ap-northeast-2.amazonaws.com"
+  - "dev/sts.ap-northeast-2.amazonaws.com"
+
+vpc_endpoints:
+  interface: []
+  gateway:
+  - name: "${vpc}-gateway-aws-s3"
+    service_name: "com.amazonaws.ap-northeast-2.s3"
+
+subnet_groups:
+  "app-private":
+    subnets:
+    - { cidr: "10.222.0.0/24", az_id: "${region}-az1" }
+    - { cidr: "10.222.1.0/24", az_id: "${region}-az2" }
+    - { cidr: "10.222.2.0/24", az_id: "${region}-az3" }
+  "app-private-pod":
+    subnets:
+    - { cidr: "10.223.0.0/19", az_id: "${region}-az1" }
+    - { cidr: "10.223.32.0/19", az_id: "${region}-az2" }
+    - { cidr: "10.223.64.0/19", az_id: "${region}-az3" }
+  "data-private-managed":
+    subnets:
+    - { cidr: "10.222.100.0/24", az_id: "${region}-az1" }
+    - { cidr: "10.222.101.0/24", az_id: "${region}-az2" }
+    - { cidr: "10.222.102.0/24", az_id: "${region}-az3" }
+    db_subnet_group_name: "${vpc}-db-private"
+    cache_subnet_group_name: "${vpc}-cache-private"
+  "data-private-self":
+    subnets:
+    - { cidr: "10.222.103.0/24", az_id: "${region}-az1" }
+    - { cidr: "10.222.104.0/24", az_id: "${region}-az2" }
+    - { cidr: "10.222.105.0/24", az_id: "${region}-az3" }
+  "net-public":
+    map_public_ip_on_launch: true
+    subnets:
+    - { cidr: "10.222.230.0/24", az_id: "${region}-az1" }
+    - { cidr: "10.222.231.0/24", az_id: "${region}-az2" }
+    - { cidr: "10.222.232.0/24", az_id: "${region}-az3" }
+  "net-private":
+    subnets:
+    - { cidr: "10.222.233.0/24", az_id: "${region}-az1" }
+    - { cidr: "10.222.234.0/24", az_id: "${region}-az2" }
+    - { cidr: "10.222.235.0/24", az_id: "${region}-az3" }
+
+eip:
+- "${vpc}-nat-gw/az1"
+- "${vpc}-nat-gw/az2"
+- "${vpc}-nat-gw/az3"
+
+nat_gateways:
+- az_id: "${region}-az1"
+  eip: "${vpc}-nat-gw/az1"
+- az_id: "${region}-az2"
+  eip: "${vpc}-nat-gw/az2"
+- az_id: "${region}-az3"
+  eip: "${vpc}-nat-gw/az3"
+
+nacl:
+  "app-private":
+    ingress_rules:
+      # Ephemeral Ports
+      800: { action: "allow", protocol: "tcp", cidr_block: "0.0.0.0/0", from_port: 1024, to_port: 65535 }
+      801: { action: "allow", protocol: "udp", cidr_block: "0.0.0.0/0", from_port: 1024, to_port: 65535 }
+      # Internal
+      900: { action: "allow", protocol: "-1", cidr_block: "${cidrs.primary}" }
+      901: { action: "allow", protocol: "-1", cidr_block: "${cidrs.pod}" }
+    egress_rules:
+      900: { action: "allow", protocol: "-1", cidr_block: "0.0.0.0/0" }
+  "app-private-pod":
+    ingress_rules:
+      # Ephemeral Ports
+      800: { action: "allow", protocol: "tcp", cidr_block: "0.0.0.0/0", from_port: 1024, to_port: 65535 }
+      801: { action: "allow", protocol: "udp", cidr_block: "0.0.0.0/0", from_port: 1024, to_port: 65535 }
+      # Internal
+      900: { action: "allow", protocol: "-1", cidr_block: "${cidrs.primary}" }
+      901: { action: "allow", protocol: "-1", cidr_block: "${cidrs.pod}" }
+    egress_rules:
+      900: { action: "allow", protocol: "-1", cidr_block: "0.0.0.0/0" }
+  "data-private-managed":
+    ingress_rules:
+      # RDS - MySQL
+      400: { action: "allow", protocol: "tcp", cidr_block: "${cidrs.primary}", from_port: 3306, to_port: 3306 }
+      401: { action: "allow", protocol: "tcp", cidr_block: "${cidrs.pod}", from_port: 3306, to_port: 3306 }
+      # MSK - Kafka
+      410: { action: "allow", protocol: "tcp", cidr_block: "${cidrs.primary}", from_port: 2181, to_port: 2181 }
+      411: { action: "allow", protocol: "tcp", cidr_block: "${cidrs.pod}", from_port: 2181, to_port: 2181 }
+      420: { action: "allow", protocol: "tcp", cidr_block: "${cidrs.primary}", from_port: 9092, to_port: 9098 }
+      421: { action: "allow", protocol: "tcp", cidr_block: "${cidrs.pod}", from_port: 9092, to_port: 9098 }
+      422: { action: "allow", protocol: "tcp", cidr_block: "${cidrs.apne2-ops-dev}", from_port: 9092, to_port: 9098 }
+      430: { action: "allow", protocol: "tcp", cidr_block: "${cidrs.primary}", from_port: 11001, to_port: 11002 }
+      431: { action: "allow", protocol: "tcp", cidr_block: "${cidrs.pod}", from_port: 11001, to_port: 11002 }
+      # Elasticache - Redis
+      440: { action: "allow", protocol: "tcp", cidr_block: "${cidrs.primary}", from_port: 6379, to_port: 6379 }
+      441: { action: "allow", protocol: "tcp", cidr_block: "${cidrs.pod}", from_port: 6379, to_port: 6379 }
+    egress_rules:
+      # Internal
+      900: { action: "allow", protocol: "-1", cidr_block: "${cidrs.primary}" }
+      901: { action: "allow", protocol: "-1", cidr_block: "${cidrs.pod}" }
+  "data-private-self":
+    ingress_rules:
+      # Ephemeral Ports
+      800: { action: "allow", protocol: "tcp", cidr_block: "0.0.0.0/0", from_port: 1024, to_port: 65535 }
+      801: { action: "allow", protocol: "udp", cidr_block: "0.0.0.0/0", from_port: 1024, to_port: 65535 }
+      # Internal
+      900: { action: "allow", protocol: "-1", cidr_block: "${cidrs.primary}" }
+      901: { action: "allow", protocol: "-1", cidr_block: "${cidrs.pod}" }
+    egress_rules:
+      900: { action: "allow", protocol: "-1", cidr_block: "0.0.0.0/0" }
+  "net-public":
+    ingress_rules:
+      # ICMP
+      100: { action: "allow", protocol: "icmp", cidr_block: "0.0.0.0/0", icmp_type: -1, icmp_code: -1 }
+      # Management
+      200: { action: "allow", protocol: "tcp", cidr_block: "0.0.0.0/0", from_port: 22, to_port: 22 }
+      # 210: { action: "allow", protocol: "tcp", cidr_block: "0.0.0.0/0", from_port: 3389, to_port: 3389 }
+      220: { action: "allow", protocol: "udp", cidr_block: "0.0.0.0/0", from_port: 1194, to_port: 1194 }
+      # Load Balancer Ports
+      300: { action: "allow", protocol: "tcp", cidr_block: "0.0.0.0/0", from_port: 80, to_port: 80 }
+      310: { action: "allow", protocol: "tcp", cidr_block: "0.0.0.0/0", from_port: 443, to_port: 443 }
+      # Ephemeral Ports
+      800: { action: "allow", protocol: "tcp", cidr_block: "0.0.0.0/0", from_port: 1024, to_port: 65535 }
+      801: { action: "allow", protocol: "udp", cidr_block: "0.0.0.0/0", from_port: 1024, to_port: 65535 }
+      # Internal
+      900: { action: "allow", protocol: "-1", cidr_block: "${cidrs.primary}" }
+      901: { action: "allow", protocol: "-1", cidr_block: "${cidrs.pod}" }
+    egress_rules:
+      900: { action: "allow", protocol: "-1", cidr_block: "0.0.0.0/0" }
+  "net-private":
+    ingress_rules:
+      # Internal
+      900: { action: "allow", protocol: "-1", cidr_block: "${cidrs.primary}" }
+      901: { action: "allow", protocol: "-1", cidr_block: "${cidrs.pod}" }
+    egress_rules:
+      # Internal
+      900: { action: "allow", protocol: "-1", cidr_block: "${cidrs.primary}" }
+      901: { action: "allow", protocol: "-1", cidr_block: "${cidrs.pod}" }
