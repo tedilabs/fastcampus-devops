@@ -1,5 +1,5 @@
 build {
-  name    = "fastcampus-packer"
+  name = "fastcampus-packer"
 
   source "amazon-ebs.ubuntu" {
     name     = "nginx"
