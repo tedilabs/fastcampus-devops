@@ -18,13 +18,3 @@ subnet_groups:
     subnets:
     - { cidr: "10.222.2.0/24", az_id: "${region}-az1" }
     - { cidr: "10.222.3.0/24", az_id: "${region}-az2" }
-
-route_tables:
-  "public":
-    subnet_groups:
-    - "public"
-    ipv4_routes:
-    - "public"
-  "private":
-    subnet_groups:
-    - "private"
