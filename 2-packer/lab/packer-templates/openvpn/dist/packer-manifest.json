@@ -1,0 +1,68 @@
+{
+  "builds": [
+    {
+      "name": "ubuntu",
+      "builder_type": "amazon-ebs",
+      "build_time": 1635055990,
+      "files": null,
+      "artifact_id": "ap-northeast-2:ami-00d8450dcbce80e81",
+      "packer_run_uuid": "30689307-fc5d-01db-ba64-d3b70690db91",
+      "custom_data": null
+    },
+    {
+      "name": "ubuntu",
+      "builder_type": "amazon-ebs",
+      "build_time": 1635059304,
+      "files": null,
+      "artifact_id": "ap-northeast-2:ami-041b21a2470d8c65c",
+      "packer_run_uuid": "be768769-0497-4a27-33cc-f12557bf52e3",
+      "custom_data": null
+    },
+    {
+      "name": "ubuntu",
+      "builder_type": "amazon-ebs",
+      "build_time": 1635077875,
+      "files": null,
+      "artifact_id": "ap-northeast-2:ami-055343741d46aa147",
+      "packer_run_uuid": "0520068f-26bc-025c-0795-fddc8cc4268f",
+      "custom_data": null
+    },
+    {
+      "name": "ubuntu",
+      "builder_type": "amazon-ebs",
+      "build_time": 1635078546,
+      "files": null,
+      "artifact_id": "ap-northeast-2:ami-044e57b637d3bfec9",
+      "packer_run_uuid": "0b638a59-f4e8-2eec-82d4-13d366f8883d",
+      "custom_data": null
+    },
+    {
+      "name": "ubuntu",
+      "builder_type": "amazon-ebs",
+      "build_time": 1635079978,
+      "files": null,
+      "artifact_id": "ap-northeast-2:ami-0da168a5f4e4f3644",
+      "packer_run_uuid": "763834fd-857b-298d-cee8-fe30b7dff52c",
+      "custom_data": null
+    },
+    {
+      "name": "ubuntu",
+      "builder_type": "amazon-ebs",
+      "build_time": 1635080737,
+      "files": null,
+      "artifact_id": "ap-northeast-2:ami-06e29818c47038565",
+      "packer_run_uuid": "3b078b8d-e67a-5df2-a1ee-4a621ba9a5c7",
+      "custom_data": null
+    },
+    {
+      "name": "ubuntu",
+      "builder_type": "amazon-ebs",
+      "build_time": 1635081362,
+      "files": null,
+      "artifact_id": "ap-northeast-2:ami-01060cf99cfd52ff5",
+      "packer_run_uuid": "6b2f7010-1aba-5c6c-089a-7d1a072869be",
+      "custom_data": null
+    }
+  ],
+  "last_run_uuid": "6b2f7010-1aba-5c6c-089a-7d1a072869be"
+}
