@@ -1,0 +1,11 @@
+[amazon]
+amazon1 ansible_host=3.35.53.163 ansible_user=ec2-user
+amazon2 ansible_host=3.34.253.165 ansible_user=ec2-user
+
+[ubuntu]
+ubuntu1 ansible_host=ec2-3-34-49-77.ap-northeast-2.compute.amazonaws.com ansible_user=ubuntu user_name=posquit0 user_comment="from inventory" user_shell=/bin/bash user_uid=7777
+ubuntu2 ansible_host=ec2-13-209-20-108.ap-northeast-2.compute.amazonaws.com ansible_user=ubuntu user_name=posquit0 user_comment="from inventory" user_shell=/bin/bash user_uid=7777
+
+[linux:children]
+amazon
+ubuntu
