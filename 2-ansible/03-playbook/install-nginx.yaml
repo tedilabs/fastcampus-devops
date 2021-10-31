@@ -1,0 +1,33 @@
+---
+
+- name: Install Nginx on Ubuntu
+  hosts: ubuntu
+  become: true
+  tasks:
+    - name: "Install Nginx"
+      apt:
+        name: nginx
+        state: present
+        update_cache: true
+
+    - name: "Ensure nginx service started"
+      service:
+        name: nginx
+        state: started
+
+- name: Install Nginx on Amazon Linux
+  hosts: amazon
+  become: true
+  tasks:
+    - name: "Enable Nginx repository provided by Amazon"
+      command: "amazon-linux-extras enable nginx1"
+
+    - name: "Install Nginx"
+      yum:
+        name: nginx
+        state: present
+
+    - name: "Ensure nginx service started"
+      service:
+        name: nginx
+        state: started
