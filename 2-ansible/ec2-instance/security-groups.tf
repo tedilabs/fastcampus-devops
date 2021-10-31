@@ -15,6 +15,14 @@ module "sg__ssh" {
       cidr_blocks = ["0.0.0.0/0"]
       description = "Allow SSH from anywhere."
     },
+    {
+      id          = "http"
+      protocol    = "tcp"
+      from_port   = 80
+      to_port     = 80
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "Allow SSH from anywhere."
+    },
   ]
   egress_rules = [
     {
