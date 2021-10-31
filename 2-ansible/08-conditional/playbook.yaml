@@ -1,0 +1,82 @@
+---
+
+- name: Example
+  hosts: all
+  become: true
+  vars:
+    users:
+      - name: john
+        shell: /bin/bash
+        enabled: true
+      - name: alice
+        shell: /bin/sh
+        enabled: false
+      - name: claud
+        shell: /bin/bash
+        enabled: true
+      - name: henry
+        shell: /bin/sh
+        enabled: false
+      - name: jeremy
+        shell: /bin/bash
+        enabled: true
+      - name: may
+        shell: /bin/sh
+        enabled: false
+  tasks:
+    # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+    - name: "Create a user if enabled in Amazon Linux"
+      user:
+        name: "{{ item.name }}"
+        shell: "{{ item.shell }}"
+        comment: "FastCampus DevOps"
+        state: "present"
+      loop: "{{ users }}"
+      when: item.enabled and (ansible_facts["distribution"] == "Amazon")
+
+    - name: "Show items between 10 and 100"
+      debug:
+        var: item
+      loop: [ 0, 192, 154, 456, 7, 2, -1, 55, 234]
+      when:
+      - item >= 10
+      - item <= 100
+
+    - name: "Show items not between 10 and 100"
+      debug:
+        var: item
+      loop: [ 0, 192, 154, 456, 7, 2, -1, 55, 234]
+      when:
+      - (item < 10) or (item > 100)
+
+    - name: "Install Packages on Ubuntu"
+      apt:
+        name: "{{ item }}"
+        update_cache: true
+        state: "present"
+      loop:
+      - git
+      - curl
+      - htop
+      when:
+      - ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: "Install Packages on Amazon Linux"
+      yum:
+        name: "{{ item }}"
+        state: "present"
+      loop:
+      - git
+      - curl
+      - htop
+      when:
+      - ansible_facts['distribution'] == 'Amazon'
+
+    - name: "Print users"
+      command: "cut -d: -f1 /etc/passwd"
+      register: users
+
+    - name: "Is there claud"
+      debug:
+        msg: "There is no claud"
+      when: users.stdout.find('claud') == -1
