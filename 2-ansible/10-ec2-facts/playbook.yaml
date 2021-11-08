@@ -1,0 +1,32 @@
+---
+
+- name: Gather EC2 Metadata Facts
+  hosts: ubuntu
+  become: true
+  tasks:
+    # Docs: https://docs.ansible.com/ansible/latest/collections/amazon/aws/ec2_metadata_facts_module.html
+    - name: "Gather EC2 Metadata Facts"
+      amazon.aws.ec2_metadata_facts: {}
+
+    # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+    - name: "Debug Ansible facts"
+      debug:
+        var: ansible_facts
+
+    - name: "Set VPC CIDR"
+      set_fact:
+        vpc_cidr: "{{ (ansible_facts | dict2items | selectattr('key', 'match', '^ec2_network_interfaces_macs_.*_vpc_ipv4_cidr_block$') | map(attribute='value'))[0] }}"
+
+    - name: "Debug VPC CIDR"
+      debug:
+        var: vpc_cidr
+
+    - name: "Set VPC facts"
+      set_fact:
+        vpc_dns_server: '{{ vpc_cidr | ipaddr(2) | ipaddr("address") }}'
+        vpc_network: '{{ vpc_cidr | ipaddr("network") }}'
+        vpc_netmask: '{{ vpc_cidr | ipaddr("netmask") }}'
+
+    - name: "Debug variables"
+      debug:
+        var: vars
