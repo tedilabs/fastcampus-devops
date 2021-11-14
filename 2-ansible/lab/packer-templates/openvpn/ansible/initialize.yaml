@@ -1,0 +1,24 @@
+---
+- name: "Initialize instance for ansible"
+  hosts: default
+  become: true
+
+  tasks:
+  - name: "Install pip"
+    apt:
+      name:
+      - "python3-pip"
+      - "python3-setuptools"
+      state: present
+      update_cache: yes
+
+  - name: "Install Dependencies"
+    pip:
+      name:
+      - "virtualenv"
+      - "netaddr"
+
+  - name: "Install Ansible"
+    pip:
+      name: ansible
+      version: "{{ ansible_install_version | default(omit) }}"

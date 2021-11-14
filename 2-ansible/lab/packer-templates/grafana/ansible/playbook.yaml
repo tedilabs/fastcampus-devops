@@ -1,0 +1,71 @@
+---
+- name: "Ready to run Grafana"
+  hosts: localhost
+  become: true
+  vars:
+    grafana_version: "8.2.0"
+
+  tasks:
+  - name: "Install comman packages"
+    apt:
+      name: "{{ item }}"
+      state: latest
+    loop:
+    - build-essential
+    - software-properties-common
+    - htop
+    - jq
+    - wget
+    - curl
+    - git
+
+  - name: "Install required system packages for Docker"
+    apt:
+      name: "{{ item }}"
+      state: latest
+    loop:
+    - ca-certificates
+    - curl
+    - gnupg
+    - lsb-release
+
+  - name: Add Docker GPG apt Key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: Add docker repository to apt
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+      state: present
+
+  - name: Update apt and install docker-ce
+    apt:
+      name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      state: latest
+      update_cache: true
+
+  - name: Add user to docker group
+    user:
+      name: "ubuntu"
+      groups: docker
+      append: true
+
+  - name: Install docker Python Package
+    pip:
+      name: docker
+      state: present
+
+  - name: Run Grafana container on Docker
+    community.docker.docker_container:
+      name: grafana
+      image: grafana/grafana:{{ grafana_version }}
+      restart_policy: unless-stopped
+      ports:
+      - "3000:3000"
+      detach: true
+      container_default_behavior: compatibility
+      state: started

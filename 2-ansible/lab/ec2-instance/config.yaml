@@ -1,0 +1,6 @@
+context: {}
+
+remote_states:
+  "network":
+    organization: "fastcampus-devops"
+    workspace: "terraform-lab-network"
