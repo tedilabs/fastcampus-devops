@@ -8,7 +8,7 @@
 #
 
 FROM alpine:3.14
-LABEL maintainer="Byungjin Park <posquit0.bj@gmail.com>"
+LABEL maintainer="FastCampus Park <fastcampus@fastcampus.com>"
 LABEL description="Simple utility to send slack message easily."
 
 # Install needed packages
