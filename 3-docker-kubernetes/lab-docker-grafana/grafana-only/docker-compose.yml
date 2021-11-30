@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  grafana:
+    image: grafana/grafana:8.2.2
+    restart: unless-stopped
+    environment:
+      GF_INSTALL_PLUGINS: grafana-clock-panel
+    ports:
+    - 3000:3000
+    volumes:
+    - ./files/grafana.ini:/etc/grafana/grafana.ini:ro
+    - grafana-data:/var/lib/grafana
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "8m"
+        max-file: "10"
+
+volumes:
+  grafana-data: {}

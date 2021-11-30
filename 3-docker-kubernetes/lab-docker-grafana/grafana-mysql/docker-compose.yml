@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: grafana
+      MYSQL_DATABASE: grafana
+      MYSQL_USER: grafana
+      MYSQL_PASSWORD: grafana
+    volumes:
+    - mysql-data:/var/lib/mysql
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "8m"
+        max-file: "10"
+
+  grafana:
+    depends_on:
+    - db
+    image: grafana/grafana:8.2.2
+    restart: unless-stopped
+    environment:
+      GF_INSTALL_PLUGINS: grafana-clock-panel
+    ports:
+    - 3000:3000
+    volumes:
+    - ./files/grafana.ini:/etc/grafana/grafana.ini:ro
+    - grafana-data:/var/lib/grafana
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "8m"
+        max-file: "10"
+
+volumes:
+  mysql-data: {}
+  grafana-data: {}
