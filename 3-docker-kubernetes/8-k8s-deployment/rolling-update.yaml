@@ -6,11 +6,11 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 2
+      maxSurge: 1
       maxUnavailable: 0
-  minReadySeconds: 3
-  revisionHistoryLimit: 3
-  replicas: 3
+  minReadySeconds: 5
+  revisionHistoryLimit: 5
+  replicas: 5
   selector:
     matchLabels:
       app: rolling
