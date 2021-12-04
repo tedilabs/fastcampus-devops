@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dummy
+  labels:
+    app: hello
+spec:
+  containers:
+  - name: dummy
+    image: posquit0/doraemon:latest
