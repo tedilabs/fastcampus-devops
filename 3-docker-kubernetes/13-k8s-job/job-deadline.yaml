@@ -3,8 +3,6 @@ kind: Job
 metadata:
   name: hello
 spec:
-  completions: 4
-  parallelism: 1
   activeDeadlineSeconds: 3
   template:
     spec:
