@@ -3,12 +3,13 @@ kind: Job
 metadata:
   name: hello
 spec:
-  completions: 10
-  parallelism: 2
+  completions: 4
+  parallelism: 1
+  activeDeadlineSeconds: 3
   template:
     spec:
       restartPolicy: Never
       containers:
       - name: hello
         image: ubuntu:focal
-        command: ["sh", "-c", "sleep 2; echo Hello World!"]
+        command: ["sh", "-c", "sleep 5; echo Hello World!"]
