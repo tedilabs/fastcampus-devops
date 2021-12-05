@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      name: mysql
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        envFrom:
+        - configMapRef:
+            name: mysql-config
+        volumeMounts:
+        - mountPath: /tmp/config
+          name: mysql-config
+      volumes:
+      - name: mysql-config
+        configMap:
+          name: mysql-config
