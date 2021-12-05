@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: hello
+        image: ubuntu:focal
+        command: ["sh", "-c", "echo Hello World!"]
