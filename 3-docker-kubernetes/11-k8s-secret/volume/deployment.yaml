@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      name: mysql
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        envFrom:
+        - configMapRef:
+            name: mysql-config
+        - secretRef:
+            name: mysql-secret
+        volumeMounts:
+        - mountPath: /tmp/config
+          name: mysql-config
+        - mountPath: /tmp/secret
+          name: mysql-secret
+      volumes:
+      - name: mysql-config
+        configMap:
+          name: mysql-config
+      - name: mysql-secret
+        secret:
+          secretName: mysql-secret
