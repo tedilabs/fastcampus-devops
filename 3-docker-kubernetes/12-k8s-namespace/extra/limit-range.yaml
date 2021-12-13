@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: limit-range
+  namespace: fastcampus
+spec:
+  limits:
+  - type: Container
+  - type: Pod
+  - type: PersistentVolumeClaim
+    min:
+      storage: 100Mi
+    max:
+      storage: 1Gi
