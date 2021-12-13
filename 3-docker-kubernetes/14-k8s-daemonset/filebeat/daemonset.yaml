@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: filebeat
+  namespace: default
+  labels:
+    app.kubernetes.io/name: filebeat
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: filebeat
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: filebeat
+    spec:
+      serviceAccountName: filebeat
+      terminationGracePeriodSeconds: 30
+      # hostNetwork: true
+      # dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: filebeat
+        image: docker.elastic.co/beats/filebeat:7.15.0
+        args:
+        # Log to `stderr` instead of `syslog` or `file`
+        - "-e"
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        securityContext:
+          runAsUser: 0
+        resources: {}
+          # We usually recommend not to specify default resources and to leave this as a conscious
+          # choice for the user. This also increases chances charts run on environments with little
+          # resources, such as Minikube. If you do want to specify resources, uncomment the following
+          # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+          # requests:
+          #   cpu: 100m
+          #   memory: 128Mi
+          # limits:
+          #   memory: 256Mi
+        ports:
+        - name: internal-http
+          containerPort: 5066
+        livenessProbe:
+          httpGet:
+            path: /
+            port: internal-http
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: internal-http
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        volumeMounts:
+        - mountPath: /usr/share/filebeat/filebeat.yml
+          readOnly: true
+          name: config
+          subPath: filebeat.yml
+        - mountPath: /usr/share/filebeat/data
+          name: data
+        - mountPath: /var/lib/docker/containers
+          readOnly: true
+          name: varlibdockercontainers
+        - mountPath: /var/log
+          readOnly: true
+          name: varlog
+      volumes:
+      - name: config
+        configMap:
+          name: filebeat-config
+          defaultMode: 0640
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
+      - name: varlog
+        hostPath:
+          path: /var/log
+      # data folder stores a registry of read status for all files, so we don't send everything again on a Filebeat pod restart
+      - name: data
+        hostPath:
+          # When filebeat runs as non-root user, this directory needs to be writable by group (g+w).
+          path: /var/lib/filebeat-data
+          type: DirectoryOrCreate
