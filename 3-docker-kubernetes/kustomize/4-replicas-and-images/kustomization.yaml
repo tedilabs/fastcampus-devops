@@ -5,20 +5,11 @@ resources:
 - grafana/
 - hello/
 
-namespace: fastcampus
-
-commonLabels:
-  department: "devops"
-  owner: "claud"
-commonAnnotations:
-  key1: "val1"
-  key2: "val2"
-
 replicas:
 - name: grafana
   count: 2
 - name: hello
-  count: 3
+  count: 1
 
 images:
 - name: grafana/grafana
