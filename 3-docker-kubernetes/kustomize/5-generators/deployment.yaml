@@ -21,7 +21,7 @@ spec:
         - secretRef:
             name: mysql-secret
         volumeMounts:
-        - mount: /tmp/test
+        - mountPath: /tmp/test
           name: kustomize-files
       volumes:
       - name: kustomize-files
