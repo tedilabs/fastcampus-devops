@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- deployment.yaml
+
+configMapGenerator:
+- name: mysql-config
+  literals:
+  - MYSQL_DATABASE=devops
+  envs:
+  - mysql.env
+- name: test-files
+  files:
+  - files/test1.txt
+  - test2.txt=files/test2.txt
+
+secretGenerator:
+- name: mysql-secret
+  literals:
+  - MYSQL_ROOT_PASSWORD=fastcampus
+
+# These labels are added to all configmaps and secrets.
+generatorOptions:
+  labels:
+    env: dev
+  annotations:
+    managed_by: kustomize
+  # disableNameSuffixHash is true disables the default behavior of adding a
+  # suffix to the names of generated resources that is a hash of
+  # the resource contents.
+  # disableNameSuffixHash: true
