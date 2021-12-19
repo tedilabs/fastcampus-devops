@@ -4,6 +4,8 @@ metadata:
   name: hello
   labels:
     app: hello
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
 spec:
   type: LoadBalancer
   ports:
