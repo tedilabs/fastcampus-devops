@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  template:
+    spec:
+      containers:
+      - name: nginx
+        resources:
+          requests:
+            cpu: 300m
+            memory: 128Mi

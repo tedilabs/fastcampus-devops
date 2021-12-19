@@ -1,0 +1,6 @@
+- op: add
+  path: /spec/template/spec/containers/0/resources
+  value:
+    requests:
+      cpu: 200m
+      memory: 128Mi
