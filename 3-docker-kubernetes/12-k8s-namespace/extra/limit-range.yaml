@@ -6,6 +6,18 @@ metadata:
 spec:
   limits:
   - type: Container
+    default:
+      memory: 128Mi
+      cpu: 100m
+    defaultRequest:
+      memory: 64Mi
+      cpu: 50m
+    max:
+      memory: 1Gi
+      cpu: 1000m
+    min:
+      memory: 16Mi
+      cpu: 10m
   - type: Pod
   - type: PersistentVolumeClaim
     min:

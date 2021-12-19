@@ -5,6 +5,8 @@ metadata:
   namespace: fastcampus
 spec:
   hard:
+    limits.cpu: "5000m"
+    limits.memory: "8Gi"
     count/pods: 10
     count/replicationcontrollers: 10
     count/replicasets.apps: 10
