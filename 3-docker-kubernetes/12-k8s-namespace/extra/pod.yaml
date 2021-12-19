@@ -3,11 +3,10 @@ kind: Pod
 metadata:
   name: test
 spec:
-  spec:
-    containers:
-    - name: nginx
-      image: nginxdemos/hello:plain-text
-      ports:
-      - name: http
-        containerPort: 80
-        protocol: TCP
+  containers:
+  - name: nginx
+    image: nginxdemos/hello:plain-text
+    ports:
+    - name: http
+      containerPort: 80
+      protocol: TCP
