@@ -1,17 +1,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: simple
+  name: path
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: /hello
         pathType: Prefix
         backend:
           service:
             name: hello
+            port:
+              name: http
+  - http:
+      paths:
+      - path: /grafana
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana
             port:
               name: http
