@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: https
+  labels:
+    app: "httpd"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "httpd"
+  template:
+    metadata:
+      labels:
+        app: "httpd"
+    spec:
+      containers:
+      - name: httpd
+        image: httpd:latest
+        ports:
+        - name: http
+          containerPort: 80
