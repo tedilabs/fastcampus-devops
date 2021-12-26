@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: node-affinity-preferred
+  name: pod-affinity-preferred
 spec:
   replicas: 4
   selector:
