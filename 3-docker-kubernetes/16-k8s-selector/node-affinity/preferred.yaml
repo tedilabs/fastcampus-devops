@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-affinity-preferred
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      name: hello
+      labels:
+        app: hello
+    spec:
+      containers:
+      - name: nginx
+        image: nginxdemos/hello:plain-text
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 40
+            preference:
+              matchExpressions:
+              - key: team
+                operator: In
+                values:
+                - green
