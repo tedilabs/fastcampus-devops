@@ -10,7 +10,7 @@ output "node_groups" {
 
 output "latest_instance_ami" {
   value = {
-    for version, ami in data.aws_ami.latest:
+    for version, ami in data.aws_ami.latest :
     version => {
       id    = ami.id
       name  = ami.name
