@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: irsa-test
+spec:
+  serviceAccountName: irsa-test
+  containers:
+  - name: debug
+    image: posquit0/doraemon:latest
