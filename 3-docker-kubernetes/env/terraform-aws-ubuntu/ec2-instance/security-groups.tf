@@ -1,5 +1,5 @@
 module "sg" {
-  source  = "app.terraform.io/karrotpay/network/aws//modules/security-group"
+  source  = "tedilabs/network/aws//modules/security-group"
   version = "0.24.0"
 
   name        = "${local.vpc.name}-demo"

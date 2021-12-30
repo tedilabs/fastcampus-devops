@@ -31,7 +31,7 @@ resource "aws_default_vpc" "default" {
 }
 
 module "security_group" {
-  source  = "app.terraform.io/karrotpay/network/aws//modules/security-group"
+  source  = "tedilabs/network/aws//modules/security-group"
   version = "0.24.0"
 
   name        = "${local.vpc_name}-provisioner-userdata"

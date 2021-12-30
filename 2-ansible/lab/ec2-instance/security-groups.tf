@@ -1,5 +1,5 @@
 module "sg__ssh" {
-  source  = "app.terraform.io/karrotpay/network/aws//modules/security-group"
+  source  = "tedilabs/network/aws//modules/security-group"
   version = "0.24.0"
 
   name        = "${local.vpc.name}-ssh"
@@ -23,7 +23,7 @@ module "sg__ssh" {
 
 
 module "sg__openvpn" {
-  source  = "app.terraform.io/karrotpay/network/aws//modules/security-group"
+  source  = "tedilabs/network/aws//modules/security-group"
   version = "0.24.0"
 
   name        = "${local.vpc.name}-openvpn"
@@ -56,7 +56,7 @@ module "sg__openvpn" {
 }
 
 module "sg__grafana" {
-  source  = "app.terraform.io/karrotpay/network/aws//modules/security-group"
+  source  = "tedilabs/network/aws//modules/security-group"
   version = "0.24.0"
 
   name        = "${local.vpc.name}-grafana"
