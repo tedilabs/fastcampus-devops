@@ -1,3 +1,18 @@
+module "irsa__irsa_test" {
+  source  = "tedilabs/container/aws//modules/eks-irsa"
+  version = "0.13.0"
+
+  name        = "irsa-${module.cluster.name}-app-irsa-test"
+  description = "EKS IAM Role for Service Account of irsa-test app."
+
+  oidc_provider_urls       = [module.cluster.oidc_provider_urn]
+  trusted_service_accounts = ["fastcampus:irsa-test"]
+
+  inline_policies = {
+    "this" = file("policies/irsa-test.json")
+  }
+}
+
 module "irsa__aws_load_balancer_controller" {
   source  = "tedilabs/container/aws//modules/eks-irsa"
   version = "0.13.0"

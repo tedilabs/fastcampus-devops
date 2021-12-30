@@ -29,7 +29,7 @@ module "node_group__app" {
   instance_profile = module.cluster.iam_roles["node"].instance_profile_name
 
   associate_public_ip_address = true
-  subnet_ids = local.subnet_groups["public"].ids
+  subnet_ids                  = local.subnet_groups["public"].ids
   security_group_ids = [
     module.cluster.security_group_ids["node"],
     module.security_group__node.id,

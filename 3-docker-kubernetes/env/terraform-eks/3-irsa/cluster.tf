@@ -8,9 +8,9 @@ module "cluster" {
   subnet_ids   = local.subnet_groups["public"].ids
   service_cidr = "172.20.0.0/16"
 
-  endpoint_public_access = true
+  endpoint_public_access       = true
   endpoint_public_access_cidrs = ["0.0.0.0/0"]
-  endpoint_private_access = true
+  endpoint_private_access      = true
   endpoint_private_access_cidrs = [
     local.vpc.cidr_block,
   ]
