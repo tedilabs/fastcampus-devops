@@ -3,7 +3,7 @@
 
 set -euf -o pipefail
 
-DOCKER_COMPOSE_VERSION=2.1.1
+DOCKER_COMPOSE_VERSION=v2.1.1
 
 # Download and install
 sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
