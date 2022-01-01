@@ -14,7 +14,7 @@ data "aws_ami" "latest" {
 
 module "node_group__app" {
   source  = "tedilabs/container/aws//modules/eks-node-group"
-  version = "0.13.0"
+  version = "0.14.0"
 
   cluster_name = module.cluster.name
   name         = "${module.cluster.name}-app-v1.21"

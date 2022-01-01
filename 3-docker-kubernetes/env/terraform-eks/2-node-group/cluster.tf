@@ -1,6 +1,6 @@
 module "cluster" {
   source  = "tedilabs/container/aws//modules/eks-cluster"
-  version = "0.13.0"
+  version = "0.14.0"
 
   name               = "apne2-fastcampus"
   kubernetes_version = "1.21"
