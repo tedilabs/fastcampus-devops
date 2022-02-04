@@ -4,55 +4,55 @@
   hosts: ubuntu
   become: true
   tasks:
-    # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
-    - name: "Create a user"
-      user: "name=fastcampus shell=/bin/bash"
+  # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+  - name: "Create a user"
+    user: "name=fastcampus shell=/bin/bash"
 
-    - name: "Hello World"
-      command: "echo 'Hello World!'"
+  - name: "Hello World"
+    command: "echo 'Hello World!'"
 
-    # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
-    - name: "Add DNS server to resolv.conf"
-      lineinfile:
-        path: /etc/resolv.conf
-        line: 'nameserver 8.8.8.8'
+  # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
+  - name: "Add DNS server to resolv.conf"
+    lineinfile:
+      path: /etc/resolv.conf
+      line: 'nameserver 8.8.8.8'
 
-    # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
-    - name: "Install Nginx"
-      apt:
-        name: nginx
-        state: present
-        update_cache: true
+  # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+  - name: "Install Nginx"
+    apt:
+      name: nginx
+      state: present
+      update_cache: true
 
-    # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/posix/synchronize_module.html
-    - name: "Upload web directory"
-      synchronize:
-        src: files/html/
-        dest: /var/www/html
-        archive: true
-        checksum: true
-        recursive: true
-        delete: true
+  # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/posix/synchronize_module.html
+  - name: "Upload web directory"
+    synchronize:
+      src: files/html/
+      dest: /var/www/html
+      archive: true
+      checksum: true
+      recursive: true
+      delete: true
 
-    # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
-    - name: "Copy nginx configuration file"
-      copy:
-        src: files/default
-        dest: /etc/nginx/sites-enabled/default
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: '0644'
-      notify:
-      - Restart Nginx
+  # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+  - name: "Copy nginx configuration file"
+    copy:
+      src: files/default
+      dest: /etc/nginx/sites-enabled/default
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+      mode: '0644'
+    notify:
+    - Restart Nginx
 
-    # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
-    - name: "Ensure nginx service started"
-      service:
-        name: nginx
-        state: started
+  # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+  - name: "Ensure nginx service started"
+    service:
+      name: nginx
+      state: started
 
   handlers:
-    - name: Restart Nginx
-      service:
-        name: nginx
-        state: restarted
+  - name: Restart Nginx
+    service:
+      name: nginx
+      state: restarted

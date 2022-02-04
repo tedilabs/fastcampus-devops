@@ -5,28 +5,28 @@
   become: true
   gather_facts: false
   tasks:
-    # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
-    - name: "Install python on Amazon Linux"
-      yum:
-        name: "python3"
-        state: "present"
+  # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+  - name: "Install python on Amazon Linux"
+    yum:
+      name: "python3"
+      state: "present"
 
 - name: Prepare Ubuntu
   hosts: ubuntu
   become: true
   gather_facts: false
   tasks:
-    - name: "Install python on Ubuntu"
-      apt:
-        name: "python3"
-        state: "present"
-        update_cache: true
+  - name: "Install python on Ubuntu"
+    apt:
+      name: "python3"
+      state: "present"
+      update_cache: true
 
 - name: Debug
   hosts: all
   become: true
   tasks:
-    # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
-    - name: "Debug Ansible facts"
-      debug:
-        var: ansible_facts
+  # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+  - name: "Debug Ansible facts"
+    debug:
+      var: ansible_facts

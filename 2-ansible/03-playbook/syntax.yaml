@@ -10,28 +10,28 @@
 - name: Play 1
   hosts: ubuntu
   tasks:
-    - name: "Task 1: Execute command"
-      command: uptime
+  - name: "Task 1: Execute command"
+    command: uptime
 
-    - name: "Task 2: Execute script"
-      script: task2.sh
+  - name: "Task 2: Execute script"
+    script: task2.sh
 
-    - name: "Task 3: Install package"
-      apt:
-        name: nginx
-        state: present
-        update_cache: true
+  - name: "Task 3: Install package"
+    apt:
+      name: nginx
+      state: present
+      update_cache: true
 
-    - name: "Task 4: Start nginx service"
-      service:
-        name: nginx
-        state: started
+  - name: "Task 4: Start nginx service"
+    service:
+      name: nginx
+      state: started
 
 - name: Play 2
   hosts: localhost
   tasks:
-    - name: "Task 1: Execute command"
-      command: whoami
+  - name: "Task 1: Execute command"
+    command: whoami
 
-    - name: "Task 2: Execute script"
-      script: task2.sh
+  - name: "Task 2: Execute script"
+    script: task2.sh

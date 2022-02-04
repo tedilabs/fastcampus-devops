@@ -4,29 +4,29 @@
   hosts: ubuntu
   become: true
   tasks:
-    - name: "Ensure nginx service stopped"
-      service:
-        name: nginx
-        state: stopped
+  - name: "Ensure nginx service stopped"
+    service:
+      name: nginx
+      state: stopped
 
-    - name: "Uninstall Nginx"
-      apt:
-        name: nginx
-        state: absent
+  - name: "Uninstall Nginx"
+    apt:
+      name: nginx
+      state: absent
 
 - name: Uninstall Nginx on Amazon Linux
   hosts: amazon
   become: true
   tasks:
-    - name: "Ensure nginx service stopped"
-      service:
-        name: nginx
-        state: stopped
+  - name: "Ensure nginx service stopped"
+    service:
+      name: nginx
+      state: stopped
 
-    - name: "Uninstall Nginx"
-      yum:
-        name: nginx
-        state: absent
+  - name: "Uninstall Nginx"
+    yum:
+      name: nginx
+      state: absent
 
-    - name: "Disable Nginx repository provided by Amazon"
-      command: "amazon-linux-extras disable nginx1"
+  - name: "Disable Nginx repository provided by Amazon"
+    command: "amazon-linux-extras disable nginx1"

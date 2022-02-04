@@ -11,16 +11,16 @@
   # vars_files:
   # - vars.yaml
   tasks:
-    # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
-    # - name: "Create a user"
-    #   user:
-    #     name: "posquit0"
-    #     comment: "hard coding"
-    #     shell: "/bin/bash"
-    #     uid: "7777"
-    - name: "Create a user"
-      user:
-        name: "{{ user_name }}"
-        comment: "{{ user_comment }}"
-        shell: "{{ user_shell }}"
-        uid: "{{ user_uid }}"
+  # Docs: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+  # - name: "Create a user"
+  #   user:
+  #     name: "posquit0"
+  #     comment: "hard coding"
+  #     shell: "/bin/bash"
+  #     uid: "7777"
+  - name: "Create a user"
+    user:
+      name: "{{ user_name }}"
+      comment: "{{ user_comment }}"
+      shell: "{{ user_shell }}"
+      uid: "{{ user_uid }}"
