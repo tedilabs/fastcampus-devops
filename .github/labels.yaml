@@ -1,10 +1,24 @@
 # Warning
 - color: "ee0701"
+  description: "Categorize to note any change that requires extra attention."
+  name: ":warning: breaking change"
+- color: "ee0701"
   description: "Categorize bug reports."
   name: ":warning: bug"
 - color: "ee0701"
   description: "Categorize vulnerability reports."
   name: ":warning: vulnerability"
+
+# Task Types
+- color: "1d76db"
+  description: "Improvements or additions to documentation."
+  name: ":pencil2: documentation"
+- color: "1d76db"
+  description: "A new feature of the project."
+  name: ":pencil2: feature"
+- color: "1d76db"
+  description: "Any dependency updates, housekeeping, or maintenance work."
+  name: ":pencil2: maintenance"
 
 # Highlight
 - color: "0e8a16"
@@ -18,6 +32,9 @@
 - color: "b60205"
   description: "This issue or pull request already exists."
   name: ":pray: duplicate"
+- color: "b60205"
+  description: "This issue or pull request is invalid."
+  name: ":pray: invalid"
 - color: "b60205"
   description: "This will not be worked on."
   name: ":pray: wontfix"
